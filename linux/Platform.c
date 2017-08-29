@@ -20,6 +20,7 @@ in the source distribution for its full text.
 #include "LoadAverageMeter.h"
 #include "UptimeMeter.h"
 #include "ClockMeter.h"
+#include "ThermalMeter.h"
 #include "HostnameMeter.h"
 #include "LinuxProcess.h"
 
@@ -118,6 +119,7 @@ MeterClass* Platform_meterTypes[] = {
    &TasksMeter_class,
    &UptimeMeter_class,
    &BatteryMeter_class,
+   &ThermalMeter_class,
    &HostnameMeter_class,
    &AllCPUsMeter_class,
    &AllCPUs2Meter_class,

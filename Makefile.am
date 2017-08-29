@@ -21,7 +21,7 @@ ClockMeter.c ColorsPanel.c ColumnsPanel.c CPUMeter.c CRT.c MainPanel.c \
 DisplayOptionsPanel.c FunctionBar.c Hashtable.c Header.c htop.c ListItem.c \
 LoadAverageMeter.c MemoryMeter.c Meter.c MetersPanel.c Object.c Panel.c \
 BatteryMeter.c Process.c ProcessList.c RichString.c ScreenManager.c Settings.c \
-SignalsPanel.c StringUtils.c SwapMeter.c TasksMeter.c UptimeMeter.c \
+SignalsPanel.c StringUtils.c SwapMeter.c TasksMeter.c ThermalMeter.c UptimeMeter.c \
 TraceScreen.c UsersTable.c Vector.c AvailableColumnsPanel.c AffinityPanel.c \
 HostnameMeter.c OpenFilesScreen.c Affinity.c IncSet.c Action.c EnvScreen.c \
 InfoScreen.c XAlloc.c
@@ -32,25 +32,25 @@ CPUMeter.h CRT.h MainPanel.h DisplayOptionsPanel.h FunctionBar.h \
 Hashtable.h Header.h htop.h ListItem.h LoadAverageMeter.h MemoryMeter.h \
 BatteryMeter.h Meter.h MetersPanel.h Object.h Panel.h ProcessList.h RichString.h \
 ScreenManager.h Settings.h SignalsPanel.h StringUtils.h SwapMeter.h \
-TasksMeter.h UptimeMeter.h TraceScreen.h UsersTable.h Vector.h Process.h \
+TasksMeter.h ThermalMeter.h UptimeMeter.h TraceScreen.h UsersTable.h Vector.h Process.h \
 AffinityPanel.h HostnameMeter.h OpenFilesScreen.h Affinity.h IncSet.h Action.h \
 EnvScreen.h InfoScreen.h XAlloc.h
 
 if HTOP_LINUX
 htop_CFLAGS += -rdynamic 
 myhtopplatsources = linux/Platform.c linux/IOPriorityPanel.c linux/IOPriority.c \
-linux/LinuxProcess.c linux/LinuxProcessList.c linux/LinuxCRT.c linux/Battery.c
+linux/LinuxProcess.c linux/LinuxProcessList.c linux/LinuxCRT.c linux/Battery.c linux/Thermal.c
 
 myhtopplatheaders = linux/Platform.h linux/IOPriorityPanel.h linux/IOPriority.h \
-linux/LinuxProcess.h linux/LinuxProcessList.h linux/LinuxCRT.h linux/Battery.h
+linux/LinuxProcess.h linux/LinuxProcessList.h linux/LinuxCRT.h linux/Battery.h linux/Thermal.h
 endif
 
 if HTOP_FREEBSD
 myhtopplatsources = freebsd/Platform.c freebsd/FreeBSDProcessList.c \
-freebsd/FreeBSDProcess.c freebsd/FreeBSDCRT.c freebsd/Battery.c
+freebsd/FreeBSDProcess.c freebsd/FreeBSDCRT.c freebsd/Battery.c unsupported/Thermal.c
 
 myhtopplatheaders = freebsd/Platform.h freebsd/FreeBSDProcessList.h \
-freebsd/FreeBSDProcess.h freebsd/FreeBSDCRT.h freebsd/Battery.h
+freebsd/FreeBSDProcess.h freebsd/FreeBSDCRT.h freebsd/Battery.h unsupported/Thermal.h
 endif
 
 if HTOP_DRAGONFLYBSD
@@ -64,29 +64,29 @@ endif
 
 if HTOP_OPENBSD
 myhtopplatsources = openbsd/Platform.c openbsd/OpenBSDProcessList.c \
-openbsd/OpenBSDProcess.c openbsd/OpenBSDCRT.c openbsd/Battery.c
+openbsd/OpenBSDProcess.c openbsd/OpenBSDCRT.c openbsd/Battery.c unsupported/Thermal.c
 
 myhtopplatheaders = openbsd/Platform.h openbsd/OpenBSDProcessList.h \
-openbsd/OpenBSDProcess.h openbsd/OpenBSDCRT.h openbsd/Battery.h
+openbsd/OpenBSDProcess.h openbsd/OpenBSDCRT.h openbsd/Battery.h unsupported/Thermal.h
 endif
 
 if HTOP_DARWIN
 htop_LDFLAGS += -framework IOKit -framework CoreFoundation
 myhtopplatsources = darwin/Platform.c darwin/DarwinProcess.c \
-darwin/DarwinProcessList.c darwin/DarwinCRT.c darwin/Battery.c
+darwin/DarwinProcessList.c darwin/DarwinCRT.c darwin/Battery.c unsupported/Thermal.c
 
 myhtopplatheaders = darwin/Platform.h darwin/DarwinProcess.h \
-darwin/DarwinProcessList.h darwin/DarwinCRT.h darwin/Battery.h
+darwin/DarwinProcessList.h darwin/DarwinCRT.h darwin/Battery.h unsupported/Thermal.h
 endif
 
 if HTOP_UNSUPPORTED
 myhtopplatsources = unsupported/Platform.c \
 unsupported/UnsupportedProcess.c unsupported/UnsupportedProcessList.c \
-unsupported/UnsupportedCRT.c unsupported/Battery.c
+unsupported/UnsupportedCRT.c unsupported/Battery.c unsupported/Thermal.c
 
 myhtopplatheaders = unsupported/Platform.h \
 unsupported/UnsupportedProcess.h unsupported/UnsupportedProcessList.h \
-unsupported/UnsupportedCRT.h unsupported/Battery.h
+unsupported/UnsupportedCRT.h unsupported/Battery.h unsupported/Thermal.h
 endif
 
 SUFFIXES = .h

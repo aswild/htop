@@ -29,7 +29,7 @@ in the source distribution for its full text.
 //#link m
 
 static void printVersionFlag() {
-   fputs("htop " VERSION " - " COPYRIGHT "\n"
+   fputs("htop " HTOP_VERSION " - " COPYRIGHT "\n"
          "Released under the GNU GPL.\n\n",
          stdout);
    exit(0);

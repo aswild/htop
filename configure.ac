@@ -276,6 +276,26 @@ if test ! -z "$missing_headers"; then
   AC_MSG_ERROR([missing headers: $missing_headers])
 fi
 
+# Git version extension
+# ----------------------------------------------------------------------
+AC_ARG_ENABLE([gitversion],
+              AS_HELP_STRING([--disable-gitversion], [Disable dynamic git version]))
+
+HTOP_VERSION="$VERSION"
+AS_IF([test "x$enable_gitversion" != "xno"], [
+    AC_CHECK_PROG([htop_has_git], [git], [yes])
+    AS_IF([test "x$htop_has_git" = "xyes"], [
+        AC_MSG_CHECKING([Whether this is a git repo])
+        AS_IF([test -e "${srcdir}/.git" && git -C "${srcdir}" status --porcelain >/dev/null 2>&1], [
+            AC_MSG_RESULT([yes])
+            HTOP_VERSION=`git -C "${srcdir}" describe --tags --always --dirty=+`
+        ], [
+            AC_MSG_RESULT([no])
+        ])
+    ])
+])
+
+AC_DEFINE_UNQUOTED(HTOP_VERSION, ["$HTOP_VERSION"], [Package version (with optional git version extension)])
 AC_DEFINE_UNQUOTED(COPYRIGHT, "(C) 2004-$year Hisham Muhammad", [Copyright message.])
 
 # We're done, let's go!

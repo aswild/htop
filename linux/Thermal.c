@@ -35,6 +35,7 @@ typedef struct {
 } thermal_zone_t;
 
 static thermal_zone_t zones[MAX_ZONES];
+static int found_zones;
 
 void ThermalMeter_init(Meter *this) {
     FILE *fp;
@@ -45,6 +46,7 @@ void ThermalMeter_init(Meter *this) {
     (void)this; // suppress unused parameter warning
 
     memset(zones, 0, sizeof(zones));
+    found_zones = 0;
 
     if ((dir = opendir(SYS_THERMAL)) == NULL) {
         return;
@@ -64,6 +66,7 @@ void ThermalMeter_init(Meter *this) {
             }
 
             zones[i].valid = 1;
+            found_zones++;
             snprintf(path_buf, sizeof(path_buf), SYS_THERMAL_ZONE_TYPE, i);
             if ((fp = fopen(path_buf, "r")) != NULL) {
                 size_t r = fread(&(zones[i].type), 1, MAX_TYPELEN, fp);
@@ -84,6 +87,11 @@ void ThermalMeter_updateValues(Meter *this, char *buf, int size) {
     int i, len = 0;
 
     (void)this; // suppress unused parameter warning
+
+    if (!found_zones) {
+        snprintf(buf, size, "[not available]");
+        return;
+    }
 
     for (i = 0; i < MAX_ZONES; i++) {
         if (!zones[i].valid) {

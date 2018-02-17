@@ -202,36 +202,46 @@ m4_define([HTOP_CHECK_LIB],
    ], [$4])
 ])
 
-AC_ARG_ENABLE(unicode, [AS_HELP_STRING([--enable-unicode], [enable Unicode support])], ,enable_unicode="yes")
-if test "x$enable_unicode" = xyes; then
-   HTOP_CHECK_SCRIPT([ncursesw6], [addnwstr], [HAVE_LIBNCURSESW], "ncursesw6-config",
-    HTOP_CHECK_SCRIPT([ncursesw], [addnwstr], [HAVE_LIBNCURSESW], "ncursesw6-config",
-     HTOP_CHECK_SCRIPT([ncursesw], [addnwstr], [HAVE_LIBNCURSESW], "ncursesw5-config",
-      HTOP_CHECK_SCRIPT([ncurses], [addnwstr], [HAVE_LIBNCURSESW], "ncurses5-config",
-       HTOP_CHECK_LIB([ncursesw6], [addnwstr], [HAVE_LIBNCURSESW],
-        HTOP_CHECK_LIB([ncursesw], [addnwstr], [HAVE_LIBNCURSESW],
-         HTOP_CHECK_LIB([ncurses], [addnwstr], [HAVE_LIBNCURSESW],
-       missing_libraries="$missing_libraries libncursesw"
-       AC_MSG_ERROR([You may want to use --disable-unicode or install libncursesw.])
-   )))))))
-
-   AC_CHECK_HEADERS([ncursesw/curses.h],[:],
-      [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
-         [AC_CHECK_HEADERS([ncurses/curses.h],[:],
-            [AC_CHECK_HEADERS([ncurses.h],[:],[missing_headers="$missing_headers $ac_header"])])])])
-else
-   HTOP_CHECK_SCRIPT([ncurses6], [refresh], [HAVE_LIBNCURSES], "ncurses6-config",
-    HTOP_CHECK_SCRIPT([ncurses], [refresh], [HAVE_LIBNCURSES], "ncurses5-config",
-     HTOP_CHECK_LIB([ncurses6],  [refresh], [HAVE_LIBNCURSES],
-      HTOP_CHECK_LIB([ncurses],  [refresh], [HAVE_LIBNCURSES],
-      missing_libraries="$missing_libraries libncurses"
-   ))))
-   
-   AC_CHECK_HEADERS([curses.h],[:],
+dnl Use pkg-config instead of ncurses*-config scripts, only searching for ncursesw because I'm lazy
+PKG_CHECK_MODULES(NCURSESW, ncursesw, [AC_DEFINE([HAVE_LIBNCURSESW], 1, [The library is present.])],
+                  [missing_libraries="$missing_libraries libncursesw"])
+CFLAGS+=" $NCURSESW_CFLAGS"
+LIBS+=" $NCURSESW_LIBS"
+AC_CHECK_HEADERS([ncursesw/curses.h],[:],
+   [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
       [AC_CHECK_HEADERS([ncurses/curses.h],[:],
-         [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
-            [AC_CHECK_HEADERS([ncurses.h],[:],[missing_headers="$missing_headers $ac_header"])])])])
-fi
+         [AC_CHECK_HEADERS([ncurses.h],[:],[missing_headers="$missing_headers $ac_header"])])])])
+
+dnl AC_ARG_ENABLE(unicode, [AS_HELP_STRING([--enable-unicode], [enable Unicode support])], ,enable_unicode="yes")
+dnl if test "x$enable_unicode" = xyes; then
+dnl    HTOP_CHECK_SCRIPT([ncursesw6], [addnwstr], [HAVE_LIBNCURSESW], "ncursesw6-config",
+dnl     HTOP_CHECK_SCRIPT([ncursesw], [addnwstr], [HAVE_LIBNCURSESW], "ncursesw6-config",
+dnl      HTOP_CHECK_SCRIPT([ncursesw], [addnwstr], [HAVE_LIBNCURSESW], "ncursesw5-config",
+dnl       HTOP_CHECK_SCRIPT([ncurses], [addnwstr], [HAVE_LIBNCURSESW], "ncurses5-config",
+dnl        HTOP_CHECK_LIB([ncursesw6], [addnwstr], [HAVE_LIBNCURSESW],
+dnl         HTOP_CHECK_LIB([ncursesw], [addnwstr], [HAVE_LIBNCURSESW],
+dnl          HTOP_CHECK_LIB([ncurses], [addnwstr], [HAVE_LIBNCURSESW],
+dnl        missing_libraries="$missing_libraries libncursesw"
+dnl        AC_MSG_ERROR([You may want to use --disable-unicode or install libncursesw.])
+dnl    )))))))
+dnl 
+dnl    AC_CHECK_HEADERS([ncursesw/curses.h],[:],
+dnl       [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
+dnl          [AC_CHECK_HEADERS([ncurses/curses.h],[:],
+dnl             [AC_CHECK_HEADERS([ncurses.h],[:],[missing_headers="$missing_headers $ac_header"])])])])
+dnl else
+dnl    HTOP_CHECK_SCRIPT([ncurses6], [refresh], [HAVE_LIBNCURSES], "ncurses6-config",
+dnl     HTOP_CHECK_SCRIPT([ncurses], [refresh], [HAVE_LIBNCURSES], "ncurses5-config",
+dnl      HTOP_CHECK_LIB([ncurses6],  [refresh], [HAVE_LIBNCURSES],
+dnl       HTOP_CHECK_LIB([ncurses],  [refresh], [HAVE_LIBNCURSES],
+dnl       missing_libraries="$missing_libraries libncurses"
+dnl    ))))
+dnl    
+dnl    AC_CHECK_HEADERS([curses.h],[:],
+dnl       [AC_CHECK_HEADERS([ncurses/curses.h],[:],
+dnl          [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
+dnl             [AC_CHECK_HEADERS([ncurses.h],[:],[missing_headers="$missing_headers $ac_header"])])])])
+dnl fi
 
 if test "$my_htop_platform" = "freebsd"; then
    AC_CHECK_LIB([kvm], [kvm_open], [], [missing_libraries="$missing_libraries libkvm"])

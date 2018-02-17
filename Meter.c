@@ -152,7 +152,7 @@ int Meter_humanUnit(char* buffer, unsigned long int value, int size) {
       if (value / 1024 < powi)
          break;
 
-      if (prefix[1] == 0)
+      if (prefix[1] == '\0')
          break;
 
       powi *= 1024;
@@ -287,7 +287,7 @@ static void BarMeterMode_draw(Meter* this, int x, int y, int w) {
    
    int blockSizes[10];
 
-   xSnprintf(bar, w + 1, "%*s", w, buffer);
+   xSnprintf(bar, w + 1, "%*.*s", w, w, buffer);
 
    // First draw in the bar[] buffer...
    int offset = 0;

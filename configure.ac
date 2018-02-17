@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([htop],[2.0.2],[hisham@gobolinux.org])
+AC_INIT([htop],[2.1.0],[hisham@gobolinux.org])
 
 SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-$(date +%s)}"
 year=$(date -u -d "@$SOURCE_DATE_EPOCH" "+%Y" 2>/dev/null || date -u -r "$SOURCE_DATE_EPOCH" "+%Y" 2>/dev/null || date -u "+%Y")
@@ -167,7 +167,7 @@ m4_define([HTOP_CHECK_SCRIPT],
          LIBS="$htop_config_script $LIBS "
          htop_script_success=yes
       ], [])
-      LDFLAGS="$save_LDFLAGS"
+      LDFLAGS="$htop_save_LDFLAGS"
    fi
    if test "x$htop_script_success" = xno; then
       [$5]
@@ -259,6 +259,7 @@ fi
 AC_ARG_ENABLE(delayacct, [AS_HELP_STRING([--enable-delayacct], [enable linux delay accounting])],, enable_delayacct="no")
 if test "x$enable_delayacct" = xyes
 then
+   PKG_PROG_PKG_CONFIG()
    PKG_CHECK_MODULES(LIBNL3, libnl-3.0, [], [missing_libraries="$missing_libraries libnl-3"])
    PKG_CHECK_MODULES(LIBNL3GENL, libnl-genl-3.0, [], [missing_libraries="$missing_libraries libnl-genl-3"])
    CFLAGS+=" $LIBNL3_CFLAGS $LIBNL3GENL_CFLAGS"

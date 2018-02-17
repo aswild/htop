@@ -26,6 +26,7 @@ in the source distribution for its full text.
 #define THERMAL_ZONE_LEN strlen(THERMAL_ZONE)
 
 
+
 void ThermalMeter_init(Meter *this);
 
 void ThermalMeter_updateValues(Meter *this, char *buf, int size);

@@ -1,4 +1,4 @@
-.TH "HTOP" "1" "2015" "@PACKAGE_STRING@" "Utils"
+.TH "HTOP" "1" "2018" "@PACKAGE_STRING@" "Utils"
 .SH "NAME"
 htop \- interactive process viewer
 .SH "SYNOPSIS"
@@ -39,7 +39,7 @@ Sort by this column (use \-\-sort\-key help for a column list)
 \fB\-u \-\-user=USERNAME\fR
 Show only the processes of a given user
 .TP
-\fB\-v \-\-version
+\fB\-V \-\-version
 Output version information and exit
 .TP
 \fB\-t \-\-tree

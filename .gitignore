@@ -34,6 +34,7 @@ config.sub
 configure
 depcomp
 htop.1
+INSTALL
 install-sh
 libtool
 ltmain.sh

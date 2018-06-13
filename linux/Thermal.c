@@ -69,10 +69,16 @@ void ThermalMeter_init(Meter *this) {
             found_zones++;
             snprintf(path_buf, sizeof(path_buf), SYS_THERMAL_ZONE_TYPE, i);
             if ((fp = fopen(path_buf, "r")) != NULL) {
-                size_t r = fread(&(zones[i].type), 1, MAX_TYPELEN, fp);
+                char *newline;
+                size_t r;
+                memset(&zones[i].type, 0, MAX_TYPELEN);
+                r = fread(&zones[i].type, 1, MAX_TYPELEN-1, fp);
                 fclose(fp);
-                if (zones[i].type[r-1] == '\n') {
-                    zones[i].type[r-1] = '\0';
+                if (r < 1) {
+                    strncpy((char*)&zones[i].type, "[unknown]", MAX_TYPELEN);
+                }
+                else if ((newline = strchr(zones[i].type, '\n')) != NULL) {
+                    *newline = '\0';
                 }
             }
         }
@@ -101,8 +107,11 @@ void ThermalMeter_updateValues(Meter *this, char *buf, int size) {
         if ((fp = fopen(path_buf, "r")) != NULL) {
             long ltemp;
             float ftemp;
-            fread(temp_buf, 1, sizeof(temp_buf), fp);
-            ltemp = strtol(temp_buf, NULL, 10);
+            if (fread(temp_buf, 1, sizeof(temp_buf), fp) < 1) {
+                ltemp = 0;
+            } else {
+                ltemp = strtol(temp_buf, NULL, 10);
+            }
             ftemp = ltemp / 1000.0;
             len += snprintf(buf + len, size - len, "%s: %.1f, ", zones[i].type, ftemp);
             fclose(fp);

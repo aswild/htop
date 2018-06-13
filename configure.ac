@@ -16,6 +16,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET
 
 AM_INIT_AUTOMAKE([1.11])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 # Checks for programs.
 # ----------------------------------------------------------------------

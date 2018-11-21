@@ -30,7 +30,7 @@ char* String_cat(const char* s1, const char* s2) {
    int l1 = strlen(s1);
    int l2 = strlen(s2);
    char* out = xMalloc(l1 + l2 + 1);
-   strncpy(out, s1, l1);
+   strcpy(out, s1);
    strncpy(out+l1, s2, l2+1);
    return out;
 }

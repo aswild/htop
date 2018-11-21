@@ -499,7 +499,7 @@ static void LinuxProcessList_readOpenVZData(LinuxProcess* process, const char* d
    FILE* file = fopen(filename, "r");
    if (!file)
       return;
-   (void) fscanf(file,
+   int count = fscanf(file,
       "%*32u %*32s %*1c %*32u %*32u %*32u %*32u %*32u %*32u %*32u "
       "%*32u %*32u %*32u %*32u %*32u %*32u %*32u %*32u "
       "%*32u %*32u %*32u %*32u %*32u %*32u %*32u %*32u "
@@ -508,6 +508,7 @@ static void LinuxProcessList_readOpenVZData(LinuxProcess* process, const char* d
       "%*32u %*32u %*32u %*32u %*32u %*32u %*32u "
       "%*32u %*32u %32u %32u",
       &process->vpid, &process->ctid);
+   (void)count; // suppress -Wunused-result
    fclose(file);
    return;
 }
@@ -740,11 +741,11 @@ static char* LinuxProcessList_updateTtyDevice(TtyDriver* ttyDrivers, unsigned in
       struct stat sstat;
       char* fullPath;
       for(;;) {
-         asprintf(&fullPath, "%s/%d", ttyDrivers[i].path, idx);
+         xAsprintf(&fullPath, "%s/%d", ttyDrivers[i].path, idx);
          int err = stat(fullPath, &sstat);
          if (err == 0 && major(sstat.st_rdev) == maj && minor(sstat.st_rdev) == min) return fullPath;
          free(fullPath);
-         asprintf(&fullPath, "%s%d", ttyDrivers[i].path, idx);
+         xAsprintf(&fullPath, "%s%d", ttyDrivers[i].path, idx);
          err = stat(fullPath, &sstat);
          if (err == 0 && major(sstat.st_rdev) == maj && minor(sstat.st_rdev) == min) return fullPath;
          free(fullPath);
@@ -755,7 +756,7 @@ static char* LinuxProcessList_updateTtyDevice(TtyDriver* ttyDrivers, unsigned in
       if (err == 0 && tty_nr == sstat.st_rdev) return strdup(ttyDrivers[i].path);
    }
    char* out;
-   asprintf(&out, "/dev/%u:%u", maj, min);
+   xAsprintf(&out, "/dev/%u:%u", maj, min);
    return out;
 }
 

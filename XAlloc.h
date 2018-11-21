@@ -37,4 +37,6 @@ char* xStrdup_(const char* str) __attribute__((nonnull));
 
 char* xStrdup_(const char* str);
 
+int __attribute__((format(printf, 2, 3))) xAsprintf(char **strp, const char *fmt, ...);
+
 #endif

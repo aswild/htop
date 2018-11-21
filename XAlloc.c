@@ -69,3 +69,14 @@ char* xStrdup_(const char* str) {
    }
    return data;
 }
+
+int __attribute__((format(printf, 2, 3))) xAsprintf(char **strp, const char *fmt, ...) {
+    int ret;
+    va_list ap;
+    va_start(ap, fmt);
+    ret = vasprintf(strp, fmt, ap);
+    if (ret == -1) {
+        fail();
+    }
+    return ret;
+}

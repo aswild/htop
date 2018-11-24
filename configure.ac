@@ -111,6 +111,13 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],[
 CFLAGS="$save_cflags"
 AC_SUBST(wextra_flag)
 
+AC_ARG_ENABLE(werror, [AS_HELP_STRING([--disable-werror], [disable building with -Werror])])
+werror_flag=''
+if test "x$enable_werror" != "xno"; then
+    werror_flag='-Werror'
+fi
+AC_SUBST(werror_flag)
+
 # Checks for features and flags.
 # ----------------------------------------------------------------------
 PROCDIR=/proc

@@ -215,8 +215,8 @@ static HandlerResult ScreensPanel_eventHandlerNormal(Panel* super, int ch) {
             Panel_onKey(super, ch);
             break;
          }
-         /* else fallthrough */
       }
+      /* else fallthrough */
       case KEY_F(7):
       case '[':
       case '-':
@@ -232,8 +232,8 @@ static HandlerResult ScreensPanel_eventHandlerNormal(Panel* super, int ch) {
             Panel_onKey(super, ch);
             break;
          }
-         /* else fallthrough */
       }
+      /* else fallthrough */
       case KEY_F(8):
       case ']':
       case '+':

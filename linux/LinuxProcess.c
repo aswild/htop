@@ -401,7 +401,7 @@ static inline void LinuxProcess_printPerfCounter(float val, int len, char* buffe
    if (val != -1) {
       xSnprintf(buffer, n, perfFmt[len], val);
    } else {
-      xSnprintf(buffer, n, perfNA[len]);
+      xSnprintf(buffer, n, "%s", perfNA[len]);
       *attr = CRT_colors[PROCESS_SHADOW];
    }
 }

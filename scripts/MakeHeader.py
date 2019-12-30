@@ -97,16 +97,8 @@ for line in file.readlines():
 out.write( "\n" )
 out.write( "#endif\n" )
 
-# only write a new .h file if something changed.
-# This prevents a lot of recompilation during development
 out.seek(0)
-try:
-   with io.open(name + ".h", "r", encoding="utf-8") as orig:
-      origcontents = orig.readlines()
-except:
-   origcontents = ""
-if origcontents != out.readlines():
-   with io.open(name + ".h", "w", encoding="utf-8") as new:
-      print("Writing "+name+".h")
-      new.write(out.getvalue())
+with io.open(name + ".h", "w", encoding="utf-8") as new:
+  #print("Writing "+name+".h")
+  new.write(out.getvalue())
 out.close()

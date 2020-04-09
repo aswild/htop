@@ -10,7 +10,6 @@ year=$(date -u -d "@$SOURCE_DATE_EPOCH" "+%Y" 2>/dev/null || date -u -r "$SOURCE
 AC_CONFIG_SRCDIR([htop.c])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIR([m4])
 
 # Required by hwloc scripts
 AC_CANONICAL_TARGET
@@ -232,7 +231,7 @@ dnl          HTOP_CHECK_LIB([ncurses], [addnwstr], [HAVE_LIBNCURSESW],
 dnl        missing_libraries="$missing_libraries libncursesw"
 dnl        AC_MSG_ERROR([You may want to use --disable-unicode or install libncursesw.])
 dnl    )))))))
-dnl 
+dnl
 dnl    AC_CHECK_HEADERS([ncursesw/curses.h],[:],
 dnl       [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
 dnl          [AC_CHECK_HEADERS([ncurses/curses.h],[:],
@@ -244,7 +243,7 @@ dnl      HTOP_CHECK_LIB([ncurses6],  [refresh], [HAVE_LIBNCURSES],
 dnl       HTOP_CHECK_LIB([ncurses],  [refresh], [HAVE_LIBNCURSES],
 dnl       missing_libraries="$missing_libraries libncurses"
 dnl    ))))
-dnl    
+dnl
 dnl    AC_CHECK_HEADERS([curses.h],[:],
 dnl       [AC_CHECK_HEADERS([ncurses/curses.h],[:],
 dnl          [AC_CHECK_HEADERS([ncurses/ncurses.h],[:],
@@ -310,10 +309,10 @@ then
 
    AC_CHECK_HEADERS([linux/perf_counter.h], [have_perf_counter=yes],
                                             [have_perf_counter=no])
-   
+
    AC_CHECK_HEADERS([linux/perf_event.h], [have_perf_event=yes],
                                           [have_perf_event=no])
-   
+
    if test "x${have_perf_counter}" = xno -a "x${have_perf_event}" = xno; then
       os=`uname -s -r`
       AC_MSG_FAILURE([
@@ -324,7 +323,7 @@ then
       uname reports: ${os}
      ------------------------------------------------------------])
    fi
-   
+
    # Check for hardware architecture
    no_target=yes
    AC_MSG_CHECKING([hardware])
@@ -343,7 +342,7 @@ then
          AC_MSG_RESULT([$hw])
          ;;
    esac
-   
+
    if test x$no_target = xyes; then
       AC_DEFINE([NOTARGET], [1], [Define to 1 when no specific target is supported.])
    fi
